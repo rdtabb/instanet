@@ -4,3 +4,8 @@ export const enum Collections {
 }
 
 export const uid = '0oTjLKa1YHgYbfPFPYLOXKK7CTA3'
+
+export const tags = {
+    userposts: 'userposts',
+    userinfo: 'userinfo'
+}

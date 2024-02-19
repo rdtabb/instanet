@@ -1,4 +1,5 @@
-import { User } from './types'
+import { User, Post } from './types'
+import { tags } from './constants'
 
 export const fetchUserlist = async (): Promise<User[] | undefined> => {
     try {
@@ -15,14 +16,33 @@ export const fetchUserlist = async (): Promise<User[] | undefined> => {
     }
 }
 
-export const fetchUserDataset = async (uid: string): Promise<User | undefined> => {
+export const fetchUserPosts = async (uid: string): Promise<Post[] | undefined> => {
     try {
-        const result = await fetch(`http://localhost:3000/api/users/${uid}`)
+        const result = await fetch(`http://localhost:3000/api/users/${uid}`, {
+            next: { tags: [tags.userposts] }
+        })
         if (!result.ok) {
             throw new Error(`Error fetching from api/users/${uid}`)
         }
         const data: User = await result.json()
-        return data
+        return data.newPosts
+    } catch (error) {
+        console.log('Error in fetchUserDataset: ', error)
+    }
+}
+
+export const fetchUserinfo = async (
+    uid: string
+): Promise<Omit<User, 'newPosts' | 'liked'> | undefined> => {
+    try {
+        const result = await fetch(`http://localhost:3000/api/users/${uid}`, {
+            next: { tags: [tags.userinfo] }
+        })
+        if (!result.ok) {
+            throw new Error(`Error fetching from api/users/${uid}`)
+        }
+        const { newPosts, liked, ...userdata } = (await result.json()) as User
+        return userdata
     } catch (error) {
         console.log('Error in fetchUserDataset: ', error)
     }
