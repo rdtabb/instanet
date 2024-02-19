@@ -3,11 +3,11 @@ import { fetchUserDataset } from '@/models/methods'
 import styles from './feed.module.css'
 
 export const Feed = async ({ uid }: { uid: string }) => {
-    const { newPosts } = await fetchUserDataset(uid)
+    const user = await fetchUserDataset(uid)
 
     return (
         <section className={styles.feed}>
-            {newPosts.map((post) => (
+            {user?.newPosts.map((post) => (
                 <article className={styles.post}>
                     <img
                         className={styles.image}

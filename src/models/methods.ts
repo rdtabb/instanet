@@ -1,23 +1,29 @@
-import { doc, getDoc, getDocs, collection } from 'firebase/firestore'
-
-import { db } from '@/db/db.config'
-import { Collections } from './constants'
-
 import { User } from './types'
 
-export const fetchUserlist = async (): Promise<User[]> => {
-    const result: User[] = []
+export const fetchUserlist = async (): Promise<User[] | undefined> => {
+    try {
+        const result = await fetch(`http://localhost:3000/api/users`)
 
-    const userCollection = collection(db, Collections.USERS)
-    const userDocs = await getDocs(userCollection)
-    userDocs.forEach((doc) => {
-        result.push(doc.data() as User)
-    })
+        if (!result.ok) {
+            throw new Error(`Error fetching from api/users`)
+        }
 
-    return result
+        const data: User[] = await result.json()
+        return data
+    } catch (error) {
+        console.log('Error in fetchUserlist: ', error)
+    }
 }
 
-export const fetchUserDataset = async (uid: string): Promise<User> => {
-    const userDocument = doc(db, Collections.USERS, uid)
-    return (await getDoc(userDocument)).data() as User
+export const fetchUserDataset = async (uid: string): Promise<User | undefined> => {
+    try {
+        const result = await fetch(`http://localhost:3000/api/users/${uid}`)
+        if (!result.ok) {
+            throw new Error(`Error fetching from api/users/${uid}`)
+        }
+        const data: User = await result.json()
+        return data
+    } catch (error) {
+        console.log('Error in fetchUserDataset: ', error)
+    }
 }

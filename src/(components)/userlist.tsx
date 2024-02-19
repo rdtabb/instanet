@@ -7,7 +7,7 @@ export const Userlist = async () => {
 
     return (
         <ul>
-            {userlist.map((user) => (
+            {userlist?.map((user) => (
                 <li key={user.name} className="flex justify-between">
                     <img src={user.imgurl} alt={user.name} width={88} height={88} />
                     <p>{user.name}</p>
