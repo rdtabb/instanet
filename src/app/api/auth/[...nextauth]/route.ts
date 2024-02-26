@@ -14,13 +14,24 @@ export const authOptions: NextAuthOptions = {
         url: process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
         secret: process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
     }),
+    pages: {
+        signIn: '/signin'
+    },
     callbacks: {
-        async jwt({ token }) {
+        session: async ({ session, token }) => {
+            if (session?.user) {
+                //@ts-ignore
+                session.user.id = token.sub
+            }
+            return session
+        },
+        jwt: async ({ token }) => {
             return token
         }
     },
-    pages: {
-        signIn: '/signin'
+    session: {
+        strategy: 'jwt',
+        maxAge: 30 * 24 * 60 * 60 // 30 days
     }
 }
 

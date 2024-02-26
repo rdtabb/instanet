@@ -1,24 +1,38 @@
 'use client'
-import { useCallback } from 'react'
-import { redirect } from 'next/navigation'
+import { useCallback, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import { LogIn } from 'lucide-react'
+
+import { Card, CardFooter, CardTitle, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 export default function Signin() {
+    const session = useSession()
+    const router = useRouter()
+
     const signinWithGoogle = useCallback(async (): Promise<void> => {
         await signIn('google')
-        redirect('/')
     }, [])
 
+    useEffect(() => {
+        if (session.data) {
+            router.push('/')
+        }
+    }, [session.data])
+
     return (
-        <section className="flex flex-col gap-6 p-6 rounded-2xl bg-zinc-900 w-full max-w-[20rem] place-self-center">
-            <h2 className="text-xl font-bold">Signin</h2>
-            <button
-                type="button"
-                className="px-4 py-2 border-white border-2 border-solid rounded-lg bg-white text-black hover:bg-black hover:text-white transition-all duration-150"
-                onClick={signinWithGoogle}
-            >
-                Signin with google
-            </button>
-        </section>
+        <Card className="w-min h-min place-self-center">
+            <CardHeader>
+                <CardTitle>Signin</CardTitle>
+            </CardHeader>
+            <CardFooter>
+                <Button onClick={signinWithGoogle}>
+                    <LogIn className="mr-3" />
+                    Signin with google
+                </Button>
+            </CardFooter>
+        </Card>
     )
 }

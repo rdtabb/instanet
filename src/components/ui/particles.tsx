@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react'
 
 import Particles, { initParticlesEngine } from '@tsparticles/react'
-import type { Container, Engine } from '@tsparticles/engine'
+import type { Container } from '@tsparticles/engine'
 import { loadSlim } from '@tsparticles/slim'
 import { motion, useAnimation } from 'framer-motion'
 
 import { cn } from '@/utils/cn'
 
-type ParticlesProps = {
+interface SparklesCoreProps {
     id?: string
     className?: string
     background?: string
@@ -19,7 +19,7 @@ type ParticlesProps = {
     particleColor?: string
     particleDensity?: number
 }
-export const SparklesCore = (props: ParticlesProps) => {
+export const SparklesCore = (props: SparklesCoreProps) => {
     const { id, className, background, minSize, maxSize, speed, particleColor, particleDensity } =
         props
     const [init, setInit] = useState(false)

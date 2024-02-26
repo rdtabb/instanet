@@ -4,6 +4,7 @@ import { Montserrat } from 'next/font/google'
 import './globals.css'
 
 import SessionProvider from '@/context/auth-provider'
+import ThemeProvider from '@/context/theme-provider'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { cn } from '@/utils/cn'
@@ -23,13 +24,17 @@ export default async function RootLayout({
     const session = await getServerSession()
 
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={cn(monte.className, 'flex flex-col min-h-[100vh]')}>
-                <SessionProvider session={session}>
-                    <Header />
-                    <main className="max-w-[70rem] w-full mx-auto grid flex-grow">{children}</main>
-                    <Footer />
-                </SessionProvider>
+                <ThemeProvider>
+                    <SessionProvider session={session}>
+                        <Header />
+                        <main className="max-w-[70rem] w-full mx-auto grid flex-grow">
+                            {children}
+                        </main>
+                        <Footer />
+                    </SessionProvider>
+                </ThemeProvider>
             </body>
         </html>
     )
