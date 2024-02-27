@@ -1,12 +1,14 @@
 import { supabase } from './db'
 
-interface Post {
+export interface Post {
     id: string
     creator_id: string
     creator_name: string
     inserted_at: string
     updated_at: string
-    data: string
+    data: {
+        value: string
+    }
     name: string
 }
 
@@ -17,7 +19,7 @@ export const fetchUserPosts = async (uid?: string) => {
 
     const { data, error } = await supabase
         .from('posts')
-        .select<'posts', { posts: Post[] }>('posts')
+        .select<'posts', Post>()
         .eq('creator_id', uid)
 
     if (error) {

@@ -25,7 +25,11 @@ export const authOptions: NextAuthOptions = {
             }
             return session
         },
-        jwt: async ({ token }) => {
+        jwt: async ({ token, user }) => {
+            if (user) {
+                token.uid = user.id
+            }
+
             return token
         }
     },

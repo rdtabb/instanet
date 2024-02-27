@@ -1,16 +1,13 @@
-'use client'
-import { use } from 'react'
+import { getServerSession } from 'next-auth'
 
-import { UserPosts } from '@/db/methods'
+import { authOptions } from './api/auth/[...nextauth]/route'
+import { fetchUserPosts } from '@/db/methods'
 
-interface FeedProps {
-    postsPromise: UserPosts
-}
+export const Feed = async () => {
+    const session: Session = await getServerSession(authOptions)
+    const posts = await fetchUserPosts(session?.user.id)
 
-export const Feed = ({ postsPromise }: FeedProps) => {
-    const postsData = use(postsPromise)
-
-    if (!postsData) {
+    if (!posts?.length) {
         return (
             <article className="text-center">
                 <h2 className="text-3xl">no posts yet</h2>
@@ -20,7 +17,17 @@ export const Feed = ({ postsPromise }: FeedProps) => {
 
     return (
         <ul>
-            <li>you have some posts</li>
+            {posts.map((post) => (
+                <li key={post.id} className="grid gap-2 bg-white text-black p-3 rounded-xl">
+                    <div className="flex items-center gap-3 pb-2">
+                        <h1 className="text-xl font-bold">{post.name}</h1>
+                        <p>{post.updated_at.split('T')[0]}</p>
+                    </div>
+                    <article>
+                        <p>{post.data.value}</p>
+                    </article>
+                </li>
+            ))}
         </ul>
     )
 }

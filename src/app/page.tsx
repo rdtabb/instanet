@@ -1,16 +1,12 @@
 import { Suspense } from 'react'
 import { getServerSession } from 'next-auth'
 
-import { fetchUserPosts } from '@/db/methods'
+import { authOptions } from './api/auth/[...nextauth]/route'
 
 import { Feed } from './feed'
 
-export const revalidate = 1
-
 export default async function Profile() {
-    const session = await getServerSession()
-    //@ts-ignore
-    const postsPromise = fetchUserPosts(session?.user?.id)
+    const session: Session = await getServerSession(authOptions)
 
     if (!session) {
         return <h2 className="text-3xl font-bold place-self-center">You are not logged in</h2>
@@ -31,7 +27,7 @@ export default async function Profile() {
             <Suspense
                 fallback={<p className="place-self-center font-bold italic">Loading posts...</p>}
             >
-                <Feed postsPromise={postsPromise} />
+                <Feed />
             </Suspense>
         </section>
     )
