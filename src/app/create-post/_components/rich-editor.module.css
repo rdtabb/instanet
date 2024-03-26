@@ -1,0 +1,20 @@
+.editorContainer {
+    height: 100%;
+}
+
+.editorContainer > div {
+    height: 100%;
+    border: 1px solid rgb(39, 39, 42);
+    border-radius: 6px;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+        var(--tw-shadow);
+}
+
+.editorContainer div[contenteditable='true'] {
+    height: 100%;
+}
+
+.editorContainer > div:has(.ProseMirror-focused) {
+    border-color: hsl(240 4.9% 83.9%);
+    outline: none;
+}
