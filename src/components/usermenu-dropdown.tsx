@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator
 } from './ui/dropdown-menu'
 import { Button } from './ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 export const UsermenuDropdown = () => {
     const { data } = useSession()
@@ -19,7 +20,14 @@ export const UsermenuDropdown = () => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="secondary" size="icon" className="rounded-full">
-                    <CircleUser className="h-5 w-5" />
+                    {data ? (
+                        <Avatar>
+                            <AvatarImage src={data.user?.image ?? ''} />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                    ) : (
+                        <CircleUser className="h-5 w-5" />
+                    )}
                     <span className="sr-only">Toggle user menu</span>
                 </Button>
             </DropdownMenuTrigger>

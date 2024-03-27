@@ -24,6 +24,7 @@ import { Navbar } from '@/components/navbar'
 import SessionProvider from '@/context/auth-provider'
 import ThemeProvider from '@/context/theme-provider'
 import { cn } from '@/utils/cn'
+import { ThemePicker } from '@/components/theme-picker'
 
 const monte = Montserrat({ subsets: ['latin'] })
 
@@ -53,7 +54,7 @@ export default async function RootLayout({
                                             className="flex items-center gap-2 font-semibold"
                                         >
                                             <Package2 className="h-6 w-6" />
-                                            <span className="">Acme Inc</span>
+                                            <span className="">Instanet</span>
                                         </Link>
                                         <Button
                                             variant="outline"
@@ -100,7 +101,10 @@ export default async function RootLayout({
                                             </div>
                                         </form>
                                     </div>
-                                    <UsermenuDropdown />
+                                    <div className="flex gap-3 items-center">
+                                        <ThemePicker />
+                                        <UsermenuDropdown />
+                                    </div>
                                 </header>
                                 {children}
                             </div>
